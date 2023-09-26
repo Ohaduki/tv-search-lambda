@@ -3,7 +3,7 @@ const axios = require('axios')
 exports.handler = async (event) => {
     try{
         const axios = require('axios')
-        const query = event
+        const {query} = event
         if (query === "") {
             return "Please provide a search query"
         }

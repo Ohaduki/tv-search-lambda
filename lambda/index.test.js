@@ -1,5 +1,5 @@
 const index = require('./index')
-const handler = index.handler
+const {handler} = index
 
 describe('Testing the lambda function', () => {
     it('Searching for a string will return results', async () => {
