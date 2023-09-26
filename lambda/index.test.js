@@ -3,12 +3,18 @@ const handler = index.handler
 
 describe('Testing the lambda function', () => {
     it('Searching for a string will return results', async () => {
-        const res = await handler("star wars")
+        const res = await handler(
+            {
+                query: "star wars"
+            }
+        )
         expect(res).toBeInstanceOf(Array)
     })
 
     it('Searching for an empty string will return an error message', async () => {
-        const res = await handler("")
+        const res = await handler({
+            query: ""
+        })
         expect(res).toBe("Please provide a search query")
     })
 })
