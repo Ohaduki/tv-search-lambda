@@ -3,9 +3,21 @@ const axios = require('axios')
 exports.handler = async (event) => {
     try{
         const axios = require('axios')
-        const {query} = event
+        const {queryStringParameters} = event
+        if (!queryStringParameters){
+            return {
+                'statusCode': 400,
+                'headers': {'Content-Type': 'application/json'},
+                'body': "Please input a search query"
+            }
+        }
+        const {query} = queryStringParameters
         if (query === "") {
-            return "Please provide a search query"
+            return {
+                'statusCode': 400,
+                'headers': {'Content-Type': 'application/json'},
+                'body': "Please input a search query"
+            }
         }
         const url = `https://api.tvmaze.com/search/shows?q=${query}`
         const res = await axios.get(url)
@@ -16,8 +28,18 @@ exports.handler = async (event) => {
                 image: item.show.image.medium
             }
         })
-        return shows
+        return{
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': JSON.stringify(shows)
+        }
     } catch (err) {
-        return ("An error occurred")
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps(message)
+        }
     }
+
+    console.log(event)
 }
