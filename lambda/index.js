@@ -1,19 +1,10 @@
 const axios = require('axios')
-const { it } = require('node:test')
 
 exports.handler = async (event) => {
     try{
-        const axios = require('axios')
         const {queryStringParameters} = event
-        if (!queryStringParameters){
-            return {
-                'statusCode': 400,
-                'headers': {'Content-Type': 'application/json'},
-                'body': "Please input a search query"
-            }
-        }
-        const {query} = queryStringParameters
-        if (query === "") {
+        const query = queryStringParameters?.query
+        if (!query) {
             return {
                 'statusCode': 400,
                 'headers': {'Content-Type': 'application/json'},
@@ -37,13 +28,10 @@ exports.handler = async (event) => {
             'body': JSON.stringify(shows)
         }
     } catch (err) {
-        console.log(err)
         return {
-            'statusCode': 200,
+            'statusCode': 500,
             'headers': {'Content-Type': 'application/json'},
             'body': 'An Internal Error Occurred'
         }
     }
-
-    console.log(event)
 }
