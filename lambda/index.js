@@ -12,7 +12,6 @@ exports.handler = async (event) => {
                 'body': "Please input a search query"
             }
         }
-        console.log(queryStringParameters)
         const {query} = queryStringParameters
         if (query === "") {
             return {
@@ -21,17 +20,16 @@ exports.handler = async (event) => {
                 'body': "Please input a search query"
             }
         }
-        console.log(query)
         const url = `https://api.tvmaze.com/search/shows?q=${query}`
         const res = await axios.get(url)
         const shows = res.data.map((item) => {
-            const item = {}
-            item.name = item.show.name
-            item.summary = item.show.summary
+            const show = {}
+            show.name = item.show.name
+            show.summary = item.show.summary
             if (item.show.image){
-                item.image = item.show.image.medium
+                show.image = item.show.image.medium
             }
-            return item
+            return show
         })
         return{
             'statusCode': 200,
