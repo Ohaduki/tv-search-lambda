@@ -15,6 +15,11 @@ function TvSearch(){
             console.log(res);
             if (res.status === 200){
                 setSearchResults(res.data);
+                if (res.data.length === 0){
+                    setIsSearchError(true);
+                    setSearchResults("No results found");
+                    return;
+                }
                 setIsSearchError(false);
                 const display = res.data.map((result) => {return(<TvShow data={result}/>)});
                 setDisplayResults(display);
