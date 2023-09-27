@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { it } = require('node:test')
 
 exports.handler = async (event) => {
     try{
@@ -11,6 +12,7 @@ exports.handler = async (event) => {
                 'body': "Please input a search query"
             }
         }
+        console.log(queryStringParameters)
         const {query} = queryStringParameters
         if (query === "") {
             return {
@@ -19,14 +21,17 @@ exports.handler = async (event) => {
                 'body': "Please input a search query"
             }
         }
+        console.log(query)
         const url = `https://api.tvmaze.com/search/shows?q=${query}`
         const res = await axios.get(url)
         const shows = res.data.map((item) => {
-            return {
-                name: item.show.name,
-                summary: item.show.summary,
-                image: item.show.image.medium
+            const item = {}
+            item.name = item.show.name
+            item.summary = item.show.summary
+            if (item.show.image){
+                item.image = item.show.image.medium
             }
+            return item
         })
         return{
             'statusCode': 200,
@@ -34,10 +39,11 @@ exports.handler = async (event) => {
             'body': JSON.stringify(shows)
         }
     } catch (err) {
+        console.log(err)
         return {
             'statusCode': 200,
             'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps(message)
+            'body': 'An Internal Error Occurred'
         }
     }
 
